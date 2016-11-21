@@ -2,9 +2,9 @@ D-Cube: Dense-Block Detection in Terabyte-Scale Tensors
 ========================
 **D-Cube (Disk-based Dense-block Detection)** is an algorithm for detecting dense subtensors in tensors.
 **D-Cube** has the following properties:
- * *scalable*: D-Cube can handle large data not fitting in memory or even on a disk.
- * *fast*: Even when data fit in memory, D-Cube outperforms its competitors in terms of speed.
- * *accurate*: D-Cube gives high accuracy in real-world data as well as theoretical accuracy guarantees.
+ * *scalable*: **D-Cube** handles large data not fitting in memory or even on a disk.
+ * *fast*: Even when data fit in memory, **D-Cube** outperforms its competitors in terms of speed.
+ * *accurate*: **D-Cube** gives high accuracy in real-world data as well as theoretical accuracy guarantees.
 
 Datasets
 ========================
