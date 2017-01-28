@@ -10,7 +10,7 @@ Datasets
 ========================
 The download links for the datasets used in the paper are [here](http://www.cs.cmu.edu/~kijungs/codes/dcube/)
 
-Building and Running D-Zoom
+Building and Running D-Cube
 ========================
 Please see [User Guide](user_guide.pdf)
 
