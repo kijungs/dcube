@@ -22,10 +22,11 @@ Reference
 ========================
 If you use this code as part of any published research, please acknowledge the following paper.
 ```
-@inproceedings{shin2017disk,
-  author    = {Kijung Shin and Bryan Hooi and Jisu Kim and Christos Faloutsos},
-  title     = {D-Cube: Dense-Block Detection in Terabyte-Scale Tensors},
-  booktitle={Proceedings of the Ninth ACM International Conference on Web Search and Data Mining},
+@inproceedings{shin2017dcube,
+  title={D-cube: Dense-block detection in terabyte-scale tensors},
+  author={Shin, Kijung and Hooi, Bryan and Kim, Jisu and Faloutsos, Christos},
+  booktitle={Proceedings of the Tenth ACM International Conference on Web Search and Data Mining},
+  pages={681--689},
   year={2017},
   organization={ACM}
 }
