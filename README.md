@@ -32,7 +32,7 @@ If you use this code as part of any published research, please acknowledge the f
 }
 
 @article{shin2021detecting,
-  title     = {Temporal locality-aware sampling for accurate triangle counting in real graph streams},
+  title     = {Detecting Group Anomalies in Tera-Scale Multi-Aspect Data via Dense-Subtensor Mining},
   author    = {Shin, Kijung and Hooi, Bryan and Kim, Jisu and Faloutsos, Christos},
   journal   = {Frontiers in Big Data},
   year      = {2021}
