@@ -25,9 +25,9 @@ fi
 
 echo "make jar archive..."
 cd class
-jar cf DCube-1.0.jar ./
-rm ../DCube-1.0.jar
-mv DCube-1.0.jar ../
+jar cf DCube-2.0.jar ./
+rm ../DCube-2.0.jar
+mv DCube-2.0.jar ../
 cd ..
 rm -rf class
 

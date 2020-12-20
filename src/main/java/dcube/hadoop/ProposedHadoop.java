@@ -89,13 +89,21 @@ public class ProposedHadoop {
         }
         System.out.println("policy: " + args[4]);
 
-        final int blockNum = Integer.valueOf(args[5]);
+        final double theta = Double.valueOf(args[5]);
+        System.out.println("mass_threshold:" + theta);
+        if(theta < 1) {
+            System.err.println("Mass_threshold should be greater than or equal to one");
+            printError();
+            System.exit(-1);
+        }
+
+        final int blockNum = Integer.valueOf(args[6]);
         System.out.println("num_of_blocks: " + blockNum);
 
-        int reducerNum = Integer.valueOf(args[6]);
+        int reducerNum = Integer.valueOf(args[7]);
         System.out.println("num_of_reducers: " + reducerNum);
 
-        String logPath = args[7];
+        String logPath = args[8];
         System.out.println("log path (local): " + logPath);
         File dir = new File(logPath);
 
@@ -116,6 +124,7 @@ public class ProposedHadoop {
         System.out.println("dimension: " + dimension);
         System.out.println("densityMeasure: " +  args[3]);
         System.out.println("policy: " +  args[4]);
+        System.out.println("mass_threshold: " +  theta);
         System.out.println("num_of_blocks: " + blockNum);
         System.out.println("reducerNum: " + reducerNum);
         System.out.println("log path (local): " + logPath);
@@ -123,14 +132,15 @@ public class ProposedHadoop {
         System.out.println();
         System.out.println("running the algorithm...");
         ProposedHadoop proposed = new ProposedHadoop(input, output, logPath, dimension, reducerNum);
-        proposed.run(blockNum, densityMeasure, policy);
+        proposed.run(blockNum, densityMeasure, policy, theta);
 
     }
 
     private static void printError() {
-        System.err.println("Usage: run_hadoop.sh input_path output_path dimension density_measure policy num_of_blocks num_of_reducers log_path");
+        System.err.println("Usage: run_hadoop.sh input_path output_path dimension density_measure policy mass_threshold num_of_blocks num_of_reducers log_path");
         System.err.println("Density_measure should be one of [ari, geo, susp]");
         System.err.println("Policy should be one of [density, cardinality]");
+        System.err.println("Mass_threshold should be a number greater than or equal to one");
     }
 
     protected enum TensorType{
@@ -158,7 +168,7 @@ public class ProposedHadoop {
 
     private Configuration conf;
 
-    public void run(final int blockNum, DensityMeasure densityMeasure, final int runningMode) throws Exception {
+    public void run(final int blockNum, DensityMeasure densityMeasure, final int runningMode, final double theta) throws Exception {
 
         long start = System.currentTimeMillis();
         copyOriTesnor();
@@ -179,7 +189,7 @@ public class ProposedHadoop {
         final List<BlockInfo> listOfBlocks = new LinkedList();
         double bestAccuracy = 0;
         for(int i = 0; i < blockNum; i++) {
-            BlockInfo block = findOneBlock(i, densityMeasure, runningMode);
+            BlockInfo block = findOneBlock(i, densityMeasure, runningMode, theta);
             bestAccuracy = Math.max(bestAccuracy, removeAndEvaluateBlock(i, block, measure, i == blockNum -1));
             listOfBlocks.add(block);
         }
@@ -228,7 +238,7 @@ public class ProposedHadoop {
      * find one block from a given tensor
      * @return # of ieterations when the density is maximized
      */
-    private BlockInfo findOneBlock(int blockIndex, DensityMeasure densityMeasure, final int policy) throws Exception {
+    private BlockInfo findOneBlock(int blockIndex, DensityMeasure densityMeasure, final int policy, final double theta) throws Exception {
 
         final int dimension = getDimension();
         final int[] cardinalities = getCardinalities();
@@ -276,7 +286,7 @@ public class ProposedHadoop {
                         }
                     }
                     else if (policy == Proposed.POLICY_MAX_DENSITY) {
-                        double threshold = mass * (1.0) / modeToAliveValuesNum[mode];
+                        double threshold = mass * theta / modeToAliveValuesNum[mode];
                         int numToRemove = 0;
                         long removedMassSum = 0;
                         int[] attValToMass = modeToAttValToMass[mode];
@@ -304,7 +314,7 @@ public class ProposedHadoop {
                 }
             }
 
-            double threshold = mass * 1.0 / modeToAliveValuesNum[maxMode];
+            double threshold = mass * theta / modeToAliveValuesNum[maxMode];
             final int[] attValToMass = modeToAttValToMass[maxMode];
             final boolean[] attValsToRemove = new boolean[cardinalities[maxMode]];
 

@@ -4,11 +4,11 @@ D-Cube: Dense-Block Detection in Terabyte-Scale Tensors
 **D-Cube** has the following properties:
  * *scalable*: **D-Cube** handles large data not fitting in memory or even on a disk.
  * *fast*: Even when data fit in memory, **D-Cube** outperforms its competitors in terms of speed.
- * *accurate*: **D-Cube** gives high accuracy in real-world data as well as theoretical accuracy guarantees.
+ * *accurate*: **D-Cube** detects dense subtensors in real-world tensors accurately, providing theoretical accuracy guarantees.
 
 Datasets
 ========================
-The download links for the datasets used in the paper are [here](http://www.cs.cmu.edu/~kijungs/codes/dcube/)
+The download links for the datasets used in the paper are [here](http://dmlab.kaist.ac.kr/dcube/)
 
 Building and Running D-Cube
 ========================

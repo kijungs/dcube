@@ -37,7 +37,8 @@ public class BlockIterInfo {
         System.gc();
         long memoryUsed = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long memoryLeft = memoryToUse - memoryUsed;
-        if(memoryLeft > (Integer.BYTES + Byte.BYTES) * (long) modeLengthSum) {
+//        if(memoryLeft > (Integer.BYTES + Byte.BYTES) * (long) modeLengthSum) {
+        if(memoryLeft > 5 * (long) modeLengthSum) {
             return true;
         }
         else {

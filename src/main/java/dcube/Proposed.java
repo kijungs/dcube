@@ -78,8 +78,16 @@ public class Proposed {
             System.exit(-1);
         }
         System.out.println("policy: " + args[4]);
-        
-        final int blockNum = Integer.valueOf(args[5]);
+
+        final double theta = Double.valueOf(args[5]);
+        System.out.println("mass_threshold: " + theta);
+        if(theta < 1) {
+            System.err.println("Mass_threshold should be greater than or equal to one");
+            printError();
+            System.exit(-1);
+        }
+
+        final int blockNum = Integer.valueOf(args[6]);
         System.out.println("num_of_blocks: " + blockNum);
 
         System.out.println();
@@ -97,13 +105,14 @@ public class Proposed {
         System.out.println("running the algorithm...");
         Proposed proposed = new Proposed(tensor, output);
         System.out.println();
-        proposed.run(blockNum, densityMeasure, policy);
+        proposed.run(blockNum, densityMeasure, policy, theta);
     }
 
     private static void printError() {
-        System.err.println("Usage: run_single.sh input_path output_path dimension density_measure policy num_of_blocks");
+        System.err.println("Usage: run_single.sh input_path output_path dimension density_measure policy mass_threshold num_of_blocks");
         System.err.println("Density_measure should be one of [ari, geo, susp]");
         System.err.println("Policy should be one of [density, cardinality]");
+        System.err.println("Mass_threshold should be a number greater than or equal to one");
     }
 
 
@@ -205,7 +214,8 @@ public class Proposed {
             cardinalitiesum = cardinalities[mode];
         }
         System.gc();
-        long memoryRequired = omega * (2 * (dimension+1) + 1) * Integer.BYTES + 4 * cardinalitiesum * Integer.BYTES ;
+//        long memoryRequired = omega * (2 * (dimension+1) + 1) * Integer.BYTES + 4 * cardinalitiesum * Integer.BYTES ;
+        long memoryRequired = omega * (2 * (dimension+1) + 1) * 4 + 4 * cardinalitiesum * 4 ;
         long memoryUsed = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         if(memoryToUse > memoryRequired + memoryUsed && omega < Integer.MAX_VALUE) {
             return (int)omega;
@@ -226,7 +236,8 @@ public class Proposed {
         System.gc();
         long memoryUsed = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long memoryLeft = memoryToUse - memoryUsed;
-        return Math.max(0L, memoryLeft / Integer.BYTES / (dimension+1));
+//        return Math.max(0L, memoryLeft / Integer.BYTES / (dimension+1));
+        return Math.max(0L, memoryLeft / 4 / (dimension+1));
     }
 
     /**
@@ -560,7 +571,7 @@ public class Proposed {
         return density;
     }
 
-    public void run(final int blockNum, DensityMeasure densityMeasure, final int policy) throws IOException {
+    public void run(final int blockNum, DensityMeasure densityMeasure, final int policy, final double theta) throws IOException {
 
         long start = System.currentTimeMillis();
         copyOriTesnor();
@@ -581,7 +592,7 @@ public class Proposed {
         final List<BlockInfo> listOfBlocks = new LinkedList();
         double bestAccuracy = 0;
         for(int i = 0; i < blockNum; i++) {
-            BlockInfo block = findOneBlock(i, densityMeasure, policy);
+            BlockInfo block = findOneBlock(i, densityMeasure, policy, theta);
             bestAccuracy = Math.max(bestAccuracy, removeAndEvaluateBlock(i, block, measure));
             listOfBlocks.add(block);
         }
@@ -627,7 +638,7 @@ public class Proposed {
      * find one block from a given tensor
      * @return mode -> list of attributes contained in the block
      */
-    private BlockInfo findOneBlock(int blockIndex, DensityMeasure densityMeasure, final int policy) throws IOException {
+    private BlockInfo findOneBlock(int blockIndex, DensityMeasure densityMeasure, final int policy, final double theta) throws IOException {
 
         final int dimension = getDimension();
         final int[] cardinalities = getCardinalities();
@@ -677,7 +688,7 @@ public class Proposed {
                         }
                     }
                     else if (policy == POLICY_MAX_DENSITY) {
-                        double threshold = mass * 1.0 / modeToAliveValuesNum[mode];
+                        double threshold = mass * theta / modeToAliveValuesNum[mode];
                         int numToRemove = 0;
                         long removedMassSum = 0;
                         int[] attValToMass = modeToAttValToMass[mode];
@@ -705,7 +716,7 @@ public class Proposed {
                 }
             }
 
-            double threshold = mass * 1.0 / modeToAliveValuesNum[maxMode];
+            double threshold = mass * theta / modeToAliveValuesNum[maxMode];
             final int[] attValToMass = modeToAttValToMass[maxMode];
             final boolean[] attValsToRemove = new boolean[cardinalities[maxMode]];
 
