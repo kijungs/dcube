@@ -30,4 +30,11 @@ If you use this code as part of any published research, please acknowledge the f
   year={2017},
   organization={ACM}
 }
+
+@article{shin2021detecting,
+  title     = {Temporal locality-aware sampling for accurate triangle counting in real graph streams},
+  author    = {Shin, Kijung and Hooi, Bryan and Kim, Jisu and Faloutsos, Christos},
+  journal   = {Frontiers in Big Data},
+  year      = {2021}
+}
 ```
