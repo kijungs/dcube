@@ -23,18 +23,23 @@ Reference
 If you use this code as part of any published research, please acknowledge the following paper.
 ```
 @inproceedings{shin2017dcube,
-  title={D-cube: Dense-block detection in terabyte-scale tensors},
-  author={Shin, Kijung and Hooi, Bryan and Kim, Jisu and Faloutsos, Christos},
-  booktitle={Proceedings of the Tenth ACM International Conference on Web Search and Data Mining},
-  pages={681--689},
-  year={2017},
-  organization={ACM}
+  title        = {D-cube: Dense-block detection in terabyte-scale tensors},
+  author       = {Shin, Kijung and Hooi, Bryan and Kim, Jisu and Faloutsos, Christos},
+  booktitle    = {Proceedings of the Tenth ACM International Conference on Web Search and Data Mining},
+  pages        = {681--689},
+  year         = {2017},
+  organization = {ACM}
 }
 
 @article{shin2021detecting,
   title     = {Detecting Group Anomalies in Tera-Scale Multi-Aspect Data via Dense-Subtensor Mining},
   author    = {Shin, Kijung and Hooi, Bryan and Kim, Jisu and Faloutsos, Christos},
   journal   = {Frontiers in Big Data},
-  year      = {2021}
+  volume    = {3},      
+  pages     = {58},
+  year      = {2021},
+	url       = {https://www.frontiersin.org/article/10.3389/fdata.2020.594302},       
+  doi       = {10.3389/fdata.2020.594302},      
+  issn      = {2624-909X}
 }
 ```
